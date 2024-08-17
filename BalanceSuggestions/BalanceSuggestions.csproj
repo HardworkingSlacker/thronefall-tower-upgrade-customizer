@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
@@ -32,5 +32,6 @@
   </ItemGroup>
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <Exec Command="powershell.exe New-Item -ItemType File -Path 'C:\Program Files (x86)\Steam\steamapps\common\Thronefall\BepInEx\plugins\BalanceSuggestions\BalanceSuggestions.dll' -Force; Copy-Item -Path '$(OutDir)\BalanceSuggestions.dll' -Destination 'C:\Program Files (x86)\Steam\steamapps\common\Thronefall\BepInEx\plugins\BalanceSuggestions\BalanceSuggestions.dll' -Force;" />
+    <Exec Command="&quot;C:\Program Files (x86)\Steam\steamapps\common\Thronefall\Thronefall.exe&quot;" />
   </Target>
 </Project>
