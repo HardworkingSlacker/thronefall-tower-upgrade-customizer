@@ -3,7 +3,7 @@ using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
 
-using BalanceSuggestions.Patches;
+using BalanceSuggestions.Spires.ArchersSpire;
 using BepInEx.Configuration;
 
 namespace BalanceSuggestions;
