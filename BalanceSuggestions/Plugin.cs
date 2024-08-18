@@ -2,9 +2,9 @@
 using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
-
-using BalanceSuggestions.Spires.ArchersSpire;
 using BepInEx.Configuration;
+using BalanceSuggestions.Towers;
+using System;
 
 namespace BalanceSuggestions;
 
@@ -16,38 +16,72 @@ public class Plugin : BaseUnityPlugin
     private ConfigEntry<bool> debug;
     private ConfigEntry<PatchLogger.LoggerMethods> loggerMethod;
 
-    private ConfigEntry<int> newAdditionalArrowsToShoot;
-    private ConfigEntry<float> newRangeMulti;
-    private ConfigEntry<float> newAttackCooldownMulti;
-    private ConfigEntry<float> newProjectileSpeedMulti;
-    private ConfigEntry<float> newSlowDuration;
-
-    private void configureArcherSpirePatches()
+    private void loadTowerUpgradeConfig()
     {
-        ArcherSpire_Patch_TowerUpgrades.newAdditionalArrowsToShoot = newAdditionalArrowsToShoot.Value;
-        ArcherSpire_Patch_TowerUpgrades.newRangeMulti = newRangeMulti.Value;
-        ArcherSpire_Patch_TowerUpgrades.newAttackCooldownMulti = newAttackCooldownMulti.Value;
-        ArcherSpire_Patch_TowerUpgrades.newProjectileSpeedMulti = newProjectileSpeedMulti.Value;
-        ArcherSpire_Patch_TowerUpgrades.newSlowDuration = newSlowDuration.Value;
+
+        foreach (Tower.TowerUpgradeNames towerUpgradeName in (Tower.TowerUpgradeNames[]) Enum.GetValues(typeof(Tower.TowerUpgradeNames)))
+        {
+            string upgradeIngameName = null;
+            string towerNote = $"Note: Slowdown Effects added to this upgrade only carry over to the Archers Spire due to ingame logic currently!";
+            switch (towerUpgradeName)
+            {
+                case Tower.TowerUpgradeNames.CastleTower:
+                    upgradeIngameName = "Castle Tower";
+                    break;
+                case Tower.TowerUpgradeNames.SniperTower:
+                    upgradeIngameName = "Sniper Tower";
+                    break;
+                case Tower.TowerUpgradeNames.ShieldTower:
+                    upgradeIngameName = "Armored Tower";
+                    break;
+                case Tower.TowerUpgradeNames.BunkerTower:
+                    upgradeIngameName = "Bunker Tower";
+                    break;
+                case Tower.TowerUpgradeNames.ArchersSpire:
+                    upgradeIngameName = "Archers Spire";
+                    towerNote = "";
+                    break;
+                case Tower.TowerUpgradeNames.BallisticSpire:
+                    upgradeIngameName = "Ballistic Spire";
+                    towerNote = "";
+                    break;
+                case Tower.TowerUpgradeNames.FireSpire:
+                    upgradeIngameName = "Fire Spire";
+                    towerNote = "";
+                    break;
+                case Tower.TowerUpgradeNames.HealingSpire:
+                    upgradeIngameName = "Healing Spire";
+                    towerNote = "";
+                    break;
+            }
+            if (upgradeIngameName != null){
+                Tower.ingameNamesToEnumNames.Add(upgradeIngameName, towerUpgradeName);
+                string section = $"Tower.Upgrade.{towerUpgradeName}";
+                Tower.NewTowerUpgrade newTowerUpgrade = new Tower.NewTowerUpgrade(
+                    Config.Bind<string>(section, "UpgradeName", upgradeIngameName, "Ingame Name of the Upgrade (Changing it will cause unexpected Behavior!)").Value,
+                    Config.Bind<int>(section, "AdditionalArrows", 0, $"How many additional Arrows {upgradeIngameName} grants. (0 to disable)").Value,
+                    Config.Bind<float>(section, "DamageMultiplier", 0f, $"New Damage Multiplier for {upgradeIngameName}. (0 to disable)").Value,
+                    Config.Bind<float>(section, "RangeMultiplier", 0f, $"New Range Multiplier for {upgradeIngameName}. (0 to disable)").Value,
+                    Config.Bind<float>(section, "AttackCooldownMultiplier", 0f, $"New Attack Cooldown Multiplier for {upgradeIngameName}. (0 to disable)").Value,
+                    Config.Bind<float>(section, "ProjectileSpeedMultiplier", 0f, $"New Projectile Speed Multiplier for {upgradeIngameName}. (0 to disable)").Value,
+                    Config.Bind<float>(section, "AttackSlowdownDuration", 0f, $"Slowdown Duration in seconds for {upgradeIngameName}. (0 to disable, -1 to remove existing)\n{towerNote}").Value
+                );
+                Tower.TowerUpgradeRegistry.Add(towerUpgradeName, newTowerUpgrade);
+            }
+        }
     }
 
-    private void loadConfig()
+    private void loadGeneralConfig()
     {
         debug = Config.Bind<bool>("General", "Debug", false, "Enables Logging of Debug Messages.");
         loggerMethod = Config.Bind("General", "LoggerMethod", PatchLogger.LoggerMethods.Bepinex, "What Channel to use for Logging.");
-
-        newAdditionalArrowsToShoot = Config.Bind<int>("Spires.ArchersSpire", "AdditionalArrows", 0, "How many additional Arrows an Archer's Spire grants. (0 to disable)");
-        newRangeMulti = Config.Bind<float>("Spires.ArchersSpire", "RangeMultiplier", 0f, "New Range Multiplier for Archer's Spire. (0 to disable)");
-        newAttackCooldownMulti = Config.Bind<float>("Spires.ArchersSpire", "AttackCooldownMultiplier", 0f, "New Attack Cooldown Multiplier for Archer's Spire. (0 to disable)");
-        newProjectileSpeedMulti = Config.Bind<float>("Spires.ArchersSpire", "ProjectileSpeedMultiplier", 0f, "New Projectile Speed Multiplier for Archer's Spire. (0 to disable)");
-        newSlowDuration = Config.Bind<float>("Spires.ArchersSpire", "AttackSlowdownDuration", 0f, "Slowdown Duration in seconds for Archer's Spire. (0 to disable)");
     }
 
     private void Awake()
     {
-        loadConfig();
+        loadGeneralConfig();
 
-        configureArcherSpirePatches();
+        loadTowerUpgradeConfig();
 
         // Plugin startup logic
         Logger = base.Logger;
