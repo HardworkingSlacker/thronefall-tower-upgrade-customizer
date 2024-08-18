@@ -2,7 +2,7 @@
 using HarmonyLib;
 using BepInEx.Logging;
 
-namespace BalanceSuggestions.Utils
+namespace thronefall.tower.upgrade.customizer.Utils
 {
     internal class PatchLogger
     {

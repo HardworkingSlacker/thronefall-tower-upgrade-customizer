@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
-    <AssemblyName>BalanceSuggestions</AssemblyName>
-    <Product>BalanceSuggestions</Product>
+    <AssemblyName>thronefall.tower.upgrade.customizer</AssemblyName>
+    <Product>Thronefall Tower Upgrade Customizer</Product>
     <Version>1.0.0</Version>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
@@ -12,7 +12,7 @@
       https://nuget.bepinex.dev/v3/index.json;
       https://nuget.samboy.dev/v3/index.json
     </RestoreAdditionalProjectSources>
-    <RootNamespace>BalanceSuggestions</RootNamespace>
+    <RootNamespace>thronefall.tower.upgrade.customizer</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -31,7 +31,7 @@
     </Reference>
   </ItemGroup>
   <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(Configuration)' == 'Debug'">
-    <Exec Command="powershell.exe New-Item -ItemType File -Path 'C:\Program Files (x86)\Steam\steamapps\common\Thronefall\BepInEx\plugins\BalanceSuggestions\BalanceSuggestions.dll' -Force; Copy-Item -Path '$(OutDir)\BalanceSuggestions.dll' -Destination 'C:\Program Files (x86)\Steam\steamapps\common\Thronefall\BepInEx\plugins\BalanceSuggestions\BalanceSuggestions.dll' -Force;" />
+    <Exec Command="powershell.exe New-Item -ItemType File -Path 'C:\Program Files (x86)\Steam\steamapps\common\Thronefall\BepInEx\plugins\Thronefall Tower Upgrade Customizer\thronefall.tower.upgrade.customizer.dll' -Force; Copy-Item -Path '$(OutDir)\thronefall.tower.upgrade.customizer.dll' -Destination 'C:\Program Files (x86)\Steam\steamapps\common\Thronefall\BepInEx\plugins\Thronefall Tower Upgrade Customizer\thronefall.tower.upgrade.customizer.dll' -Force;" />
     <Exec Command="&quot;C:\Program Files (x86)\Steam\steamapps\common\Thronefall\Thronefall.exe&quot;" />
   </Target>
 </Project>

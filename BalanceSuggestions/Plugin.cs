@@ -1,12 +1,12 @@
-﻿using BalanceSuggestions.Utils;
+﻿using thronefall.tower.upgrade.customizer.Utils;
 using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
 using BepInEx.Configuration;
-using BalanceSuggestions.Towers;
+using thronefall.tower.upgrade.customizer.Towers;
 using System;
 
-namespace BalanceSuggestions;
+namespace thronefall.tower.upgrade.customizer;
 
 [BepInPlugin(MyPluginInfo.PLUGIN_GUID, MyPluginInfo.PLUGIN_NAME, MyPluginInfo.PLUGIN_VERSION)]
 public class Plugin : BaseUnityPlugin
@@ -22,7 +22,7 @@ public class Plugin : BaseUnityPlugin
         foreach (Tower.TowerUpgradeNames towerUpgradeName in (Tower.TowerUpgradeNames[]) Enum.GetValues(typeof(Tower.TowerUpgradeNames)))
         {
             string upgradeIngameName = null;
-            string towerNote = $"Note: Slowdown Effects added to this upgrade only carry over to the Archers Spire due to ingame logic currently!";
+            string towerNote = $"\nNote: Slowdown Effects added to this upgrade only carry over to the Archers Spire due to ingame logic currently!";
             switch (towerUpgradeName)
             {
                 case Tower.TowerUpgradeNames.CastleTower:
@@ -47,7 +47,7 @@ public class Plugin : BaseUnityPlugin
                     break;
                 case Tower.TowerUpgradeNames.FireSpire:
                     upgradeIngameName = "Fire Spire";
-                    towerNote = "";
+                    towerNote = "\nNote: Slowdown unfortunately doesn't work with splash damage yet.";
                     break;
                 case Tower.TowerUpgradeNames.HealingSpire:
                     upgradeIngameName = "Healing Spire";
@@ -59,12 +59,12 @@ public class Plugin : BaseUnityPlugin
                 string section = $"Tower.Upgrade.{towerUpgradeName}";
                 Tower.NewTowerUpgrade newTowerUpgrade = new Tower.NewTowerUpgrade(
                     Config.Bind<string>(section, "UpgradeName", upgradeIngameName, "Ingame Name of the Upgrade (Changing it will cause unexpected Behavior!)").Value,
-                    Config.Bind<int>(section, "AdditionalArrows", 0, $"How many additional Arrows {upgradeIngameName} grants. (0 to disable)").Value,
+                    Config.Bind<int>(section, "AdditionalArrows", -1, $"How many additional Arrows {upgradeIngameName} grants. (-1 to disable)").Value,
                     Config.Bind<float>(section, "DamageMultiplier", 0f, $"New Damage Multiplier for {upgradeIngameName}. (0 to disable)").Value,
                     Config.Bind<float>(section, "RangeMultiplier", 0f, $"New Range Multiplier for {upgradeIngameName}. (0 to disable)").Value,
                     Config.Bind<float>(section, "AttackCooldownMultiplier", 0f, $"New Attack Cooldown Multiplier for {upgradeIngameName}. (0 to disable)").Value,
                     Config.Bind<float>(section, "ProjectileSpeedMultiplier", 0f, $"New Projectile Speed Multiplier for {upgradeIngameName}. (0 to disable)").Value,
-                    Config.Bind<float>(section, "AttackSlowdownDuration", 0f, $"Slowdown Duration in seconds for {upgradeIngameName}. (0 to disable, -1 to remove existing)\n{towerNote}").Value
+                    Config.Bind<float>(section, "AttackSlowdownDuration", 0f, $"Slowdown Duration in seconds for {upgradeIngameName}. (0 to disable, -1 to remove existing){towerNote}").Value
                 );
                 Tower.TowerUpgradeRegistry.Add(towerUpgradeName, newTowerUpgrade);
             }

@@ -1,25 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
-using BalanceSuggestions.Utils;
+using thronefall.tower.upgrade.customizer.Utils;
 using HarmonyLib;
 using UnityEngine;
 using static BuildSlot;
 
-namespace BalanceSuggestions.Towers
+namespace thronefall.tower.upgrade.customizer.Towers
 {
     [HarmonyPatch(typeof(BuildSlot))]
     class Tower
     {
         public class NewTowerUpgrade {
             public string upgradeName;
-            public int newAdditionalArrowsToShoot = 0;
+            public int newAdditionalArrowsToShoot = -1;
             public float newDamageMulti = 0f;
             public float newRangeMulti = 0f;
             public float newAttackCooldownMulti = 0f;
             public float newProjectileSpeedMulti = 0f;
             public float newSlowDuration = 0f;
 
-            public NewTowerUpgrade(string upgradeName, int newAdditionalArrowsToShoot = 0, float newDamageMulti = 0f, float newRangeMulti = 0f, float newAttackCooldownMulti = 0f, float newProjectileSpeedMulti = 0f, float newSlowDuration = 0f) {
+            public NewTowerUpgrade(string upgradeName, int newAdditionalArrowsToShoot = -1, float newDamageMulti = 0f, float newRangeMulti = 0f, float newAttackCooldownMulti = 0f, float newProjectileSpeedMulti = 0f, float newSlowDuration = 0f) {
                 
                 this.upgradeName = upgradeName;
                 this.newAdditionalArrowsToShoot = newAdditionalArrowsToShoot;
@@ -50,7 +50,7 @@ namespace BalanceSuggestions.Towers
         public static void ManipulateTowerUpgrade(NewTowerUpgrade newTowerUpgrade, TowerUpgrade oldTowerUpgrade)
         {
             var towerUpgradeTraverse = Traverse.Create(oldTowerUpgrade);
-            if (newTowerUpgrade.newAdditionalArrowsToShoot > 0)
+            if (newTowerUpgrade.newAdditionalArrowsToShoot > -1)
             {
                 PatchLogger.Log($"\tSetting {newTowerUpgrade.upgradeName} additionalArrowsToShoot to {newTowerUpgrade.newAdditionalArrowsToShoot}");
                 towerUpgradeTraverse.Field("additionalArrowsToShoot").SetValue(newTowerUpgrade.newAdditionalArrowsToShoot);
