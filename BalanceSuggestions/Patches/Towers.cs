@@ -12,6 +12,7 @@ namespace thronefall.tower.upgrade.customizer.Towers
     {
         public class NewTowerUpgrade {
             public string upgradeName;
+            public int newHpChange = 0;
             public int newAdditionalArrowsToShoot = -1;
             public float newDamageMulti = 0f;
             public float newRangeMulti = 0f;
@@ -19,9 +20,10 @@ namespace thronefall.tower.upgrade.customizer.Towers
             public float newProjectileSpeedMulti = 0f;
             public float newSlowDuration = 0f;
 
-            public NewTowerUpgrade(string upgradeName, int newAdditionalArrowsToShoot = -1, float newDamageMulti = 0f, float newRangeMulti = 0f, float newAttackCooldownMulti = 0f, float newProjectileSpeedMulti = 0f, float newSlowDuration = 0f) {
+            public NewTowerUpgrade(string upgradeName, int newHpChange = 0, int newAdditionalArrowsToShoot = -1, float newDamageMulti = 0f, float newRangeMulti = 0f, float newAttackCooldownMulti = 0f, float newProjectileSpeedMulti = 0f, float newSlowDuration = 0f) {
                 
                 this.upgradeName = upgradeName;
+                this.newHpChange = newHpChange;
                 this.newAdditionalArrowsToShoot = newAdditionalArrowsToShoot;
                 this.newDamageMulti = newDamageMulti;
                 this.newRangeMulti = newRangeMulti;
@@ -184,14 +186,18 @@ namespace thronefall.tower.upgrade.customizer.Towers
                     if (TowerUpgradeRegistry.TryGetValue(upgradeName, out newTowerUpgrade))
                     {
                         ManipulateTowerUpgrade(newTowerUpgrade, oldTowerUpgrade);
+
+                        PatchLogger.Log($"Changing hpChange of UpgradePath from {__0.hpChange} to {newTowerUpgrade.newHpChange}");
+                        __0.hpChange = newTowerUpgrade.newHpChange;
                     }
                 }
                 catch (KeyNotFoundException) {
                     PatchLogger.Log($"\"{go.name}\" not known in Dictionary \"ingameNamesToEnumNames\"");
                     continue;
                 }
-                
             }
+
+
         }
             
         
