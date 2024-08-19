@@ -187,8 +187,20 @@ namespace thronefall.tower.upgrade.customizer.Towers
                     {
                         ManipulateTowerUpgrade(newTowerUpgrade, oldTowerUpgrade);
 
-                        PatchLogger.Log($"Changing hpChange of UpgradePath from {__0.hpChange} to {newTowerUpgrade.newHpChange}");
-                        __0.hpChange = (int)newTowerUpgrade.newHpChange;
+                        float towerHpMultiplier = 1f;
+                        string castleBluePrintsActiveNote = "";
+                        foreach (Equippable equippable in PerkManager.instance.CurrentlyEquipped)
+                        {
+                            PatchLogger.Log($"Equipped {equippable.name}");
+                            if (equippable.name == "Castle Blueprints")
+                            {
+                                towerHpMultiplier *= 1.5f;
+                                castleBluePrintsActiveNote = " (Castle Blueprints Active)";
+                            }
+                        }
+                        
+                        PatchLogger.Log($"Changing hpChange of UpgradePath from {__0.hpChange} to {(int)(newTowerUpgrade.newHpChange*towerHpMultiplier)}{castleBluePrintsActiveNote}");
+                        __0.hpChange = (int)(newTowerUpgrade.newHpChange*towerHpMultiplier);
                     }
                 }
                 catch (KeyNotFoundException) {

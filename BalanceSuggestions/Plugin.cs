@@ -28,22 +28,22 @@ public class Plugin : BaseUnityPlugin
             {
                 case Tower.TowerUpgradeNames.CastleTower:
                     upgradeIngameName = "Castle Tower";
-                    hpChange = 225;
+                    hpChange = 150;
                     break;
                 case Tower.TowerUpgradeNames.SniperTower:
                     hpChange = 0;
                     upgradeIngameName = "Sniper Tower";
                     break;
                 case Tower.TowerUpgradeNames.ShieldTower:
-                    hpChange = 525;
+                    hpChange = 350;
                     upgradeIngameName = "Armored Tower";
                     break;
                 case Tower.TowerUpgradeNames.BunkerTower:
-                    hpChange = 112;
+                    hpChange = 75;
                     upgradeIngameName = "Bunker Tower";
                     break;
                 case Tower.TowerUpgradeNames.ArchersSpire:
-                    hpChange = 525;
+                    hpChange = 350;
                     upgradeIngameName = "Archers Spire";
                     towerNote = "";
                     break;
@@ -53,12 +53,12 @@ public class Plugin : BaseUnityPlugin
                     towerNote = "";
                     break;
                 case Tower.TowerUpgradeNames.FireSpire:
-                    hpChange = 375;
+                    hpChange = 250;
                     upgradeIngameName = "Fire Spire";
                     towerNote = "\nNote: Slowdown unfortunately doesn't work with splash damage yet.";
                     break;
                 case Tower.TowerUpgradeNames.HealingSpire:
-                    hpChange = 1125;
+                    hpChange = 750;
                     upgradeIngameName = "Healing Spire";
                     towerNote = "";
                     break;
@@ -68,7 +68,7 @@ public class Plugin : BaseUnityPlugin
                 string section = $"Tower.Upgrade.{towerUpgradeName}";
                 Tower.NewTowerUpgrade newTowerUpgrade = new Tower.NewTowerUpgrade(
                     Config.Bind<string>(section, "UpgradeName", upgradeIngameName, "Ingame Name of the Upgrade (Changing it will cause unexpected Behavior!)").Value,
-                    Config.Bind<uint>(section, "HpChange", hpChange, $"How much additional HP {upgradeIngameName} grants. (negative values are not possible)\nNote: for some ingame reason the nominal hp change values from tooltip are multiplied by 1.5x!").Value,
+                    Config.Bind<uint>(section, "HpChange", hpChange, $"How much additional HP {upgradeIngameName} grants. (negative values are not possible)\nNote: Castle Blueprints Multiplier will be applied to these Values at runtime!").Value,
                     Config.Bind<int>(section, "AdditionalArrows", -1, $"How many additional Arrows {upgradeIngameName} grants. (-1 to disable)").Value,
                     Config.Bind<float>(section, "DamageMultiplier", 0f, $"New Damage Multiplier for {upgradeIngameName}. (0 to disable)").Value,
                     Config.Bind<float>(section, "RangeMultiplier", 0f, $"New Range Multiplier for {upgradeIngameName}. (0 to disable)").Value,
