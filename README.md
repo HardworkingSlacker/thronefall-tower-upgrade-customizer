@@ -1,7 +1,7 @@
 # Thronefall Tower Upgrade Customizer
 ## About
 
-This is a fan project and not guaranteed to be stable
+This is a fan project and not guaranteed to be stable.
 
 Use it at your own discretion.
 
