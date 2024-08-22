@@ -1,5 +1,10 @@
 # Thronefall Tower Upgrade Customizer
 ## About
+
+This is a fan project and not guaranteed to be stable
+
+Use it at your own discretion.
+
 Version: 1.0.1
 
 This mod allows you to customize a set of parameters for each of the 8 available Tower Upgrades.
